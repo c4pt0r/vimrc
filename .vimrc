@@ -4,6 +4,7 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
+Plugin 'iamcco/markdown-preview.vim'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'fatih/vim-go'
 Plugin 'Shougo/neocomplete'
@@ -56,7 +57,6 @@ set backspace=indent,eol,start                                    " More powerfu
 set t_Co=256                                                      " Explicitly tell vim that the terminal has 256 colors "
 set mouse=a                                                       " use mouse in all modes
 set report=0                                                      " always report number of lines changed                "
-set nowrap                                                        " dont wrap lines
 set scrolloff=5                                                   " 5 lines above/below cursor when scrolling
 set number                                                        " show line numbers
 set showmatch                                                     " show matching bracket (briefly jump)
@@ -74,10 +74,10 @@ set tabstop=4       " tab width
 set softtabstop=4   " backspace
 set shiftwidth=4    " indent width
 set expandtab       " expand tab to space
+set textwidth=79
 
 let mapleader=","
 syntax on
-
 
 au FileType go nmap <Leader>gd <Plug>(go-doc)
 au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
@@ -137,17 +137,18 @@ nmap <F8> :TagbarToggle<CR>
 
 if has("gui_running")
     set go=aAce  " remove toolbar
-    set guifont=Source\ Code\ Pro:h14
+    " set guifont=Hack:h16
+    set guifont=Hack:h18
     set showtabline=1
     set lines=999 columns=999
-    set cursorcolumn
+    "set cursorcolumn
     set guioptions=e  " instead of clearing this, set it to only `e`
     let base16colorspace=256
-    colorscheme hornet
+    colorscheme jellybeans
 else
     set nocursorcolumn
     set nocursorline
-    colorscheme default
+    colorscheme jellybeans
 endif
 
 "" CtrlP
@@ -160,4 +161,9 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+
+let g:mkdp_path_to_chrome = "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome"
+
+vmap <C-x> :!pbcopy<CR>  
+vmap <C-c> :w !pbcopy<CR><CR> 
 
