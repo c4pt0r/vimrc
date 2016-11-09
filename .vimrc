@@ -1,9 +1,7 @@
 set nocompatible              " be iMproved, required
-filetype off                  " required
-
+filetype off                  " required set rtp+=~/.vim/bundle/Vundle.vim call vundle#begin() 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-
 Plugin 'iamcco/markdown-preview.vim'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'fatih/vim-go'
@@ -15,7 +13,15 @@ Plugin 'flazz/vim-colorschemes'
 Plugin 'kien/ctrlp.vim'
 Plugin 'mileszs/ack.vim'
 Plugin 'Raimondi/delimitMate'
-
+Plugin 'ryanss/vim-hackernews'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'dracula/vim'
+Plugin 'tmhedberg/matchit'
+Plugin 'godlygeek/tabular'
+Plugin 'rust-lang/rust.vim'
+Plugin 'racer-rust/vim-racer'
+Plugin 'vim-scripts/OmniCppComplete'
+Plugin 'vim-scripts/a.vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -138,13 +144,14 @@ nmap <F8> :TagbarToggle<CR>
 if has("gui_running")
     set go=aAce  " remove toolbar
     " set guifont=Hack:h16
-    set guifont=Hack:h18
+    set guifont=Hack\ 15
     set showtabline=1
     set lines=999 columns=999
     "set cursorcolumn
     set guioptions=e  " instead of clearing this, set it to only `e`
-    let base16colorspace=256
-    colorscheme jellybeans
+    "let base16colorspace=256
+    "colorscheme dracula
+    colorscheme radicalgoodspeed
 else
     set nocursorcolumn
     set nocursorline
@@ -167,3 +174,29 @@ let g:mkdp_path_to_chrome = "/Applications/Google\\ Chrome.app/Contents/MacOS/Go
 vmap <C-x> :!pbcopy<CR>  
 vmap <C-c> :w !pbcopy<CR><CR> 
 
+set hidden
+let g:racer_cmd = "/home/dongxu/.cargo/bin/racer"
+let $RUST_SRC_PATH="/home/dongxu/rustc-nightly/src"
+
+set tags+=~/.vim/cpp_tags
+" build tags of your own project with Ctrl-F12
+map <C-F12> :!ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q -I _GLIBCXX_NOEXCEPT .<CR>
+
+"" OmniCppComplete
+" $ cp -R /usr/include/c++/$GCC_VERSION ~/.vim/cpp_src
+" # it is not necessary to rename headers without an extension
+" # replace the "namespace std _GLIBCXX_VISIBILITY(default)" with "namespace std"
+" $ find . -type f | xargs sed -i 's/namespace std _GLIBCXX_VISIBILITY(default)/namespace std/'
+" $ ctags -f cpp_tags -R --c++-kinds=+p --fields=+iaS --extra=+q --language-force=C++ -I _GLIBCXX_NOEXCEPT cpp_src
+let OmniCpp_NamespaceSearch = 1
+let OmniCpp_GlobalScopeSearch = 1
+let OmniCpp_ShowAccess = 1
+let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
+let OmniCpp_MayCompleteDot = 1 " autocomplete after .
+let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
+let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
+" also necessary for fixing LIBSTDC++ releated stuff
+let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+" automatically open and close the popup menu / preview window
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+set completeopt=menuone,menu,longest,preview
